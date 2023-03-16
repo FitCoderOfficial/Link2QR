@@ -1,3 +1,4 @@
+import CityPicker from "@/components/CityPicker";
 import {Card, Divider, Subtitle, Text} from "@tremor/react";
 
 export default function Home() {
@@ -12,7 +13,7 @@ export default function Home() {
         <Divider className="my-10" />
 
         <Card className="bg-gradient-to-br from-[#4b6786] to-[#183B7E]">
-          <Text className="text-2xl font-bold text-center text-white">GPT AI</Text>
+          <CityPicker />
         </Card>
 
       </Card>
