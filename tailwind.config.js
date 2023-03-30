@@ -8,6 +8,8 @@ module.exports = {
   theme: {
     extend: {
       fontFamily: {
+        poppins: ['Poppins', 'sans-serif'],
+        notosans: ['Noto Sans KR', 'sans-serif'],
         satoshi: ['Satoshi', 'sans-serif'],
         inter: ['Inter', 'sans-serif'],
       },

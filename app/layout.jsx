@@ -1,20 +1,24 @@
 import '@styles/globals.css'
+import Nav from '@components/Nav'
+import Provider from '@components/Provider'
+
 
 export const metadata = {
     title: "GreenFitAi",
-    description: "Your Personal Guide to Wellness!"
+    description: "당신을 위한 건강한 삶의 가이드!"
 }
 
 
 const Rootlayout = ({children}) => {
   return (
-    <html lang='en'>
+    <html lang='ko'>
         <body>
             <div className='main'> 
                 <div className='gradient' />
             </div>
 
             <main className='app'>
+                <Nav />
                 {children}
             </main>
         </body>
