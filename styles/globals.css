@@ -139,7 +139,7 @@
 
 /* Nav Component */
 .logo_text {
-  @apply max-sm:hidden font-satoshi font-semibold text-lg text-black tracking-wide;
+  @apply font-notosans max-sm:hidden font-semibold text-lg text-black tracking-wide;
 }
 
 .dropdown {
@@ -147,7 +147,7 @@
 }
 
 .dropdown_link {
-  @apply text-sm font-inter text-gray-700 hover:text-gray-500 font-medium;
+  @apply font-notosans text-lg text-gray-700 hover:text-gray-500 font-normal;
 }
 
 /* PromptCard Component */
