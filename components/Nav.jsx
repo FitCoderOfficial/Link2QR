@@ -7,22 +7,22 @@ import { signIn, signOut, useSession, getProviders } from 'next-auth/react'
 
 
 const Nav = () => {
+    const { data: session } = useSession()
 
-    const isUserLoggedIn = true
-
-    const [providers, setproviders] = useState(null)
+    const [providers, setProviders] = useState(null)
     const [ToggleDropdown, setToggleDropdown] = useState(false)
 
     useEffect(() => {
-        const setProviders = async () => {
+        const setUpProviders = async () => {
             const response = await getProviders()
-            setproviders(response)
-        }
 
-        setproviders();
+            setProviders(response)
+        }
+        setUpProviders()
     }, [])
 
     return (
+        
         <nav className="flex-between w-full mb-16 pt-3">
             <Link href="/" className='flex gap-2 flex-center'>
                 <Image src="/assets/images/logo.svg" alt='logo' width={30} height={30} className='object-contain' />
@@ -30,9 +30,10 @@ const Nav = () => {
                     GreenFitAi
                 </p>
             </Link>
+            
             {/* Desktop Nav */}
             <div className="sm:flex hidden">
-                {isUserLoggedIn ? (
+                {session?.user ? (
                     <div className="flex gap-3 md:gap-5">
                         <Link href="/create"
                             className="black_btn">
@@ -43,7 +44,7 @@ const Nav = () => {
                         </button>
 
                         <Link href="profile">
-                            <Image src="/assets/images/logo.svg" width={37} height={37} className="rounded-full" alt="profile" />
+                            <Image src={session?.user.image} width={37} height={37} className="rounded-full" alt="profile" />
                         </Link>
                     </div>
                 ) : (
@@ -59,9 +60,9 @@ const Nav = () => {
 
             {/* Mobile Nav */}
             <div className="sm:hidden flex relative">
-                {isUserLoggedIn ? (
+                {session?.user ? (
                     <div className="flex gap-3 md:gap-5">
-                        <Image src="/assets/images/logo.svg" alt='logo' width={30} height={30} className='object-contain' onClick={() => setToggleDropdown((prev)=> !prev)} />
+                        <Image src={session?.user.image} alt='logo' width={30} height={30} className='rounded-full object-contain' onClick={() => setToggleDropdown((prev)=> !prev)} />
 
                         {ToggleDropdown && (
                             <div className="dropdown">
