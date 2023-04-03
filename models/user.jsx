@@ -10,7 +10,7 @@ const UserSchema = new Schema({
         type: String,
         unique: [true, '이름이 이미 존재합니다'],
         required: [true, '이름을 입력해주세요'],
-        match: [/^[a-zA-Z0-9가-힣]{2,10}$/, '이름은 2~10자의 영문, 숫자, 한글로 입력해주세요'],
+        match: [/^(?=.{8,20}$)(?![_.])(?!.*[_.]{2})[a-zA-Z0-9._]+(?<![_.])$/, "사용자 이름은 8-20자의 영문,숫자를 넣어야합니다!"]
     },
     image: {    
         type: String,

@@ -62,7 +62,7 @@ const Nav = () => {
             <div className="sm:hidden flex relative">
                 {session?.user ? (
                     <div className="flex gap-3 md:gap-5">
-                        <Image src={session?.user.image} alt='logo' width={30} height={30} className='rounded-full object-contain' onClick={() => setToggleDropdown((prev)=> !prev)} />
+                        <Image src={session?.user.image} alt='logo' width={37} height={37} className='rounded-full object-contain' onClick={() => setToggleDropdown((prev)=> !prev)} />
 
                         {ToggleDropdown && (
                             <div className="dropdown">
