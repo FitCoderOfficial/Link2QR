@@ -69,7 +69,7 @@ const Nav = () => {
                                 <Link href="/profile" className="dropdown_link" onClick={() => {setToggleDropdown(false)}}>
                                     프로필
                                 </Link>
-                                <Link href="/ai" className="dropdown_link" onClick={() => {setToggleDropdown(false)}}>
+                                <Link href="/create" className="dropdown_link" onClick={() => {setToggleDropdown(false)}}>
                                     AI 상담
                                 </Link>
                                 <button type="button" className="mt-5 w-full black_btn" onClick={() => {setToggleDropdown(false); signOut()}}>

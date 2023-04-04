@@ -11,9 +11,9 @@ const CreatePrompt = () => {
   const { data: session } = useSession()
 
   const [submitting, setSubmitting] = useState(false)
-  const [post, setpost] = useState({
-    title: '',
-    body: '',
+  const [post, setPost] = useState({
+    prompt: '',
+    tag: '',
   })
 
   const createPrompt = async (e) => {
@@ -42,7 +42,7 @@ const CreatePrompt = () => {
     <Form
       type='Create'
       post={post}
-      setpost={setpost}
+      setpost={setPost}
       submitting={submitting}
       handleSubmit={createPrompt}
     />
