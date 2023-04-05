@@ -33,7 +33,7 @@ const Form = ({ type, post, setpost, submitting, handleSubmit }) => {
             <span className='text-lg font-normal'>(#운동, #웹개발, #아이디어)</span>
           </span>
           <textarea
-            value={post.prompt}
+            value={post.tag}
             onChange={(e) => setpost({ ...post, tag: e.target.value })}
             placeholder='태그를 입력해주세요'
             required
