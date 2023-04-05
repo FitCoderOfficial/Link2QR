@@ -6,7 +6,7 @@ const Home = () => {
       <h1 className='head_text text-center'>
         헬스 케어 AI
         <br />
-        <span className='green_gradient'>건강한 삶을 
+        <span className='green_gradient leading-[1.15]'>건강한 삶을 
         <br className='lg:hidden'/>위한 모든 것</span>
       </h1>
       <p className='desc text-center'>

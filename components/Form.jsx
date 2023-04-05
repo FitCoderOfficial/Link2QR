@@ -1,6 +1,6 @@
 import Link from 'next/link'
 
-const Form = ({ type, post, setpost, submitting, handleSubmit }) => {
+const Form = ({ type, post, setPost, submitting, handleSubmit }) => {
   return (
     <section className='w-full max-w-full flex-start flex-col'>
       <h1 className='head_text text-left'>
@@ -20,7 +20,7 @@ const Form = ({ type, post, setpost, submitting, handleSubmit }) => {
           </span>
           <textarea
             value={post.prompt}
-            onChange={(e) => setpost({ ...post, prompt: e.target.value })}
+            onChange={(e) => setPost({ ...post, prompt: e.target.value })}
             placeholder='제목을 입력해주세요'
             required
             className='form_textarea'
@@ -34,7 +34,7 @@ const Form = ({ type, post, setpost, submitting, handleSubmit }) => {
           </span>
           <textarea
             value={post.tag}
-            onChange={(e) => setpost({ ...post, tag: e.target.value })}
+            onChange={(e) => setPost({ ...post, tag: e.target.value })}
             placeholder='태그를 입력해주세요'
             required
             className='form_input'

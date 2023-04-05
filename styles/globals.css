@@ -88,7 +88,7 @@
 }
 
 .head_text {
-  @apply font-notosans mt-5 text-5xl font-bold leading-[1.15] text-black sm:text-6xl;
+  @apply font-notosans mt-5 text-5xl font-bold leading-[2.15] text-black sm:text-6xl;
 }
 
 .orange_gradient {
