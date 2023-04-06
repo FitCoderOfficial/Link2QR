@@ -44,7 +44,7 @@ const PromptCard = ({ post, handleEdit, handleDelete, handleTagClick }) => {
             </h3>
             <p className='text-gray-500 text-sm'> {post.creator}내용 </p>
           </div>
-          {console.log(post)}
+          {console.log(post.creator)}
         </div>
 
         <div className='copy_btn' onClick={handleCopy}>
