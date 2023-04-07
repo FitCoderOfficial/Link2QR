@@ -28,7 +28,7 @@ const MyProfile = () => {
 
 
     const handleEdit = (post) => {
-        router.push(`/update-prompt?id=${post._id}`);
+        router.push(`/update?id=${post._id}`);
     };
 
 
@@ -39,7 +39,7 @@ const MyProfile = () => {
 
         if (hasConfirmed) {
             try {
-                await fetch(`/api/prompt/${post._id.toString()}`, {
+                await fetch(`/api/post/${post._id.toString()}`, {
                     method: "DELETE",
                 });
 
@@ -56,8 +56,8 @@ const MyProfile = () => {
         <Profile
             name='내'
             data={myPosts}
-            handleEdit={[handleEdit]}
-            handleDelete={[handleDelete]}
+            handleEdit={handleEdit}
+            handleDelete={handleDelete}
         />
     )
 }
