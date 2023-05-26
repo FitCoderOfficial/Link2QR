@@ -3,13 +3,12 @@ export default function Home() {
     
     <section className='w-full flex-center flex-col'>
       <h1 className='head_text text-center'>
-        Discover & Share
+        복잡한 링크 대신
         <br className='max-md:hidden' />
-        <span className='orange_gradient text-center'> AI-Powered Prompts</span>
+        <span className='orange_gradient text-center'> QR 코드로 더 쉽게</span>
       </h1>
       <p className='desc text-center'>
-        Promptopia is an open-source AI prompting tool for modern world to
-        discover, create and share creative prompts
+      My QR은 혁신적인 방식으로 와이파이 접속 정보와 웹 링크를 공유합니다. <br />간편하게 QR 코드를 생성하고, 친구들과 공유하세요.
       </p>
     </section>
   );

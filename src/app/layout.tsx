@@ -1,6 +1,7 @@
 import type { Metadata } from 'next'
 import '../../styles/globals.css'
 import Nav from '../../components/Nav'
+import Feed from '../../components/Feed'
 
 export const metadata: Metadata = {
   title: 'My QR Code',
@@ -22,6 +23,7 @@ export default function RootLayout({
         <main className='app'>
           <Nav />
           {children}
+          <Feed />
         </main>
       </body>
     </html>
