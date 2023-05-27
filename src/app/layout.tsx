@@ -1,7 +1,7 @@
 import type { Metadata } from 'next'
 import '../../styles/globals.css'
 import Nav from '../../components/Nav'
-import Feed from '../../components/Feed'
+
 
 export const metadata: Metadata = {
   title: 'My QR Code',
@@ -16,14 +16,14 @@ export default function RootLayout({
   return (
     <html lang="ko">
       <body>
-        <div className=''>
+        <div className='main'>
           <div className='gradient' />
         </div>
 
         <main className='app'>
           <Nav />
           {children}
-          <Feed />
+          
         </main>
       </body>
     </html>
