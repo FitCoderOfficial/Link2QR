@@ -132,6 +132,10 @@
   @apply mt-16 mx-auto w-full max-w-xl flex justify-center items-center flex-col gap-2;
 }
 
+.menufeed {
+  @apply bg-white rounded-lg shadow-xl px-4 py-6 mt-2 flex flex-wrap justify-center gap-4
+}
+
 /* Form Component */
 .form_textarea {
   @apply w-full flex rounded-lg h-[200px] mt-2 p-3 text-sm text-gray-500 outline-0;
@@ -140,6 +144,7 @@
 .form_input {
   @apply w-full flex rounded-lg mt-2 p-3 text-sm text-gray-500 outline-0;
 }
+
 
 /* Nav Component */
 .logo_text {

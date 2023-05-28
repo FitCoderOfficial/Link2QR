@@ -3,6 +3,7 @@
 import Link from "next/link";
 import Image from "next/image";
 import { useEffect, useState } from "react";
+import { LuMenu } from "react-icons/lu"
 
 const Nav = () => {
   const [toggleDropdown, setToggleDropdown] = useState(false);
@@ -29,21 +30,18 @@ const Nav = () => {
           <Link href='/wifi' className='menu_btn'>
             와이파이
           </Link>
+          <Link href='/vcard' className='menu_btn'>
+            연락처 (vCard)
+          </Link>
         </div>
       </div>
 
       {/* Mobile Navigation */}
       <div className='sm:hidden flex relative'>
           <div className='flex'></div>
-          <Image
-              src='/assets/images/logo.svg'
-              width={37}
-              height={37}
-              className='rounded-full'
-              alt='profile'
-              onClick={() => setToggleDropdown(!toggleDropdown)}
-            />
+          <LuMenu onClick={() => setToggleDropdown(!toggleDropdown)}/>
 
+              
             {toggleDropdown && (
               <div className='dropdown'>
                 <Link
@@ -59,6 +57,13 @@ const Nav = () => {
                   onClick={() => setToggleDropdown(false)}
                 >
                   와이파이로 QR 생성
+                </Link>
+                <Link
+                  href='/vcard'
+                  className='dropdown_link'
+                  onClick={() => setToggleDropdown(false)}
+                >
+                  연락처로 QR 생성
                 </Link>
               </div>
             )}
