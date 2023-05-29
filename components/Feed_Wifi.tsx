@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import { QRCode } from 'antd';
+import { QRCodeSVG } from 'qrcode.react';
 import CustomQR from "./CustomQR";
 
 const WifiFeed = () => {
@@ -46,20 +46,50 @@ const WifiFeed = () => {
                     <option value="WEP">WEP</option>
                     <option value="nopass">No Password</option>
                 </select>
-                <CustomQR selectedIcon={selectedIcon} onIconSelect={setSelectedIcon} />
             </form>
 
             {ssid && password ? (
                 <div className="feed">
-                    <QRCode value={generateWifiQRCodeValue()} icon={selectedIcon} iconSize={80} size={256} errorLevel="H"/>
+                    <div className="feed">
+                        <QRCodeSVG
+                            value={generateWifiQRCodeValue()}
+                            size={256}
+                            level={"L"}
+                            {...(selectedIcon && {
+                                imageSettings: {
+                                    src: selectedIcon,
+                                    x: undefined,
+                                    y: undefined,
+                                    height: 50,
+                                    width: 50,
+                                    excavate: true,
+                                }
+                            })}
+                            className="object-contain" />
+
+                    </div>
                 </div>
             )
                 : (
-                    <div className="feed">
-                        <QRCode value="myqr.com" size={256} errorLevel="H" icon={selectedIcon} iconSize={80} />
-                    </div>
+                        <div className="feed">
+                            <QRCodeSVG
+                                value="myqr.com"
+                                size={256}
+                                level={"L"}
+                                {...(selectedIcon && {
+                                    imageSettings: {
+                                        src: selectedIcon,
+                                        x: undefined,
+                                        y: undefined,
+                                        height: 80,
+                                        width: 80,
+                                        excavate: true,
+                                    }
+                                })} />
+                        </div>
                 )
             }
+            <CustomQR onIconSelect={setSelectedIcon} />
         </section>
     );
 }

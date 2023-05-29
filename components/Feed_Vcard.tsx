@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import { QRCode } from 'antd';
+import { QRCodeSVG } from 'qrcode.react';
 import CustomQR from "./CustomQR";
 
 const Feed_Vcard = () => {
@@ -51,21 +51,50 @@ const Feed_Vcard = () => {
                     onChange={(e) => setAddress(e.target.value)}
                     className='search_input peer'
                 />
-                <CustomQR onIconSelect={setSelectedIcon} />
+
             </form>
 
             {name && email && phone && address ? (
                 <div className="feed">
-                    <QRCode value={generateVCardQRCodeValue()} size={256} errorLevel="H" icon={selectedIcon} iconSize={80} className="object-contain"/>
+                    <QRCodeSVG
+                        value={generateVCardQRCodeValue()}
+                        size={256}
+                        level={"L"}
+                        {...(selectedIcon && {
+                            imageSettings: {
+                                src: selectedIcon,
+                                x: undefined,
+                                y: undefined,
+                                height: 50,
+                                width: 50,
+                                excavate: true,
+                            }
+                        })}
+                        className="object-contain" />
                 </div>
             )
                 : (
-                    <div className="feed">
-                        <QRCode value="myqr.com" size={256} errorLevel="H" icon={selectedIcon} iconSize={80} className="object-contain"/>
-                    </div>
+                        <div className="feed">
+                            <QRCodeSVG
+                                value="myqr.com"
+                                size={256}
+                                level={"L"}
+                                {...(selectedIcon && {
+                                    imageSettings: {
+                                        src: selectedIcon,
+                                        x: undefined,
+                                        y: undefined,
+                                        height: 80,
+                                        width: 80,
+                                        excavate: true,
+                                    }
+                                })} />
+                        </div>
                 )
             }
+            <CustomQR onIconSelect={setSelectedIcon} />
         </section>
+
     );
 }
 
