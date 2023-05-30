@@ -1,7 +1,7 @@
 import React, { useState, useRef } from 'react';
 import Image from 'next/image'
 
-const CustomQR = ({ onIconSelect }) => {
+const CustomQR = ({ onIconSelect, onForegroundColorChange, onBackgroundColorChange }) => {
     const [showIcons, setShowIcons] = useState(false);
     const logoNames = [
         "appstore",
@@ -63,14 +63,7 @@ const CustomQR = ({ onIconSelect }) => {
 
 
     const [activeMenu, setActiveMenu] = useState('');
-    const [selectedColor, setSelectedColor] = useState('#6590D5'); // 선택된 색상 상태
-
-
-    const handleColorChange = (e) => {
-        setSelectedColor(e.target.value);
-        // 필요한 경우 색상 변경 로직 추가
-    };
-
+    
     const toggleMenu = (menuName) => {
         if (menuName === '전경색') {
             // 전경색 메뉴를 클릭할 경우 컬러 픽커에 포커스
@@ -78,14 +71,33 @@ const CustomQR = ({ onIconSelect }) => {
         }
         setActiveMenu(activeMenu === menuName ? '' : menuName);
     };
+    
+    
+    const [selectedForegroundColor, setSelectedForegroundColor] = useState('##000000'); // 전경색 상태
+    const [selectedBackgroundColor, setSelectedBackgroundColor] = useState('#FFFFFF'); // 배경색 상태
+    const foregroundColorPickerRef = useRef<HTMLInputElement>(null);
+    const backgroundColorPickerRef = useRef<HTMLInputElement>(null);
 
-
-
-    const colorPickerRef = useRef<HTMLInputElement>(null); // 컬러 픽커에 대한 ref 생성
-
-    const openColorPicker = () => {
-        colorPickerRef.current?.click(); // 컬러 픽커의 클릭 이벤트 발생
+    const handleForegroundColorChange = (e) => {
+        const newColor = e.target.value;
+        setSelectedForegroundColor(newColor);
+        onForegroundColorChange(newColor); // 부모 컴포넌트에 전경색 변경 알림
     };
+
+    const handleBackgroundColorChange = (e) => {
+        const newColor = e.target.value;
+        setSelectedBackgroundColor(newColor);
+        onBackgroundColorChange(newColor); // 부모 컴포넌트에 배경색 변경 알림
+    };
+
+    const openForegroundColorPicker = () => {
+        foregroundColorPickerRef.current?.click();
+    };
+
+    const openBackgroundColorPicker = () => {
+        backgroundColorPickerRef.current?.click();
+    };
+
 
     return (
         <div className="dropdown-menu feed ">
@@ -98,25 +110,24 @@ const CustomQR = ({ onIconSelect }) => {
                 <div className="cursor-pointer">
                     <div className="flex items-center text-gray-400 text-base">
                         <input
-                            ref={colorPickerRef}
+                            ref={foregroundColorPickerRef}
                             type="color"
-                            value={selectedColor}
-                            onChange={handleColorChange}
-                            className='w-6 h-6 rounded-full appearance-none' // 적절한 스타일 조정
+                            value={selectedForegroundColor}
+                            onChange={handleForegroundColorChange}
+                            className='w-7 h-7 rounded-full border-2 border-gray-300 appearance-none'
                         />
-                        <span className="text-gray-400 text-base ml-2" onClick={openColorPicker}>전경색</span>
+                        <span className="text-gray-400 text-base ml-2" onClick={openForegroundColorPicker}>전경색</span>
                     </div>
                 </div>
                 <div className="cursor-pointer">
                     <div className="flex items-center text-gray-400 text-base">
                         <input
                             type="color"
-                            value={selectedColor}
-                            onChange={handleColorChange}
-                            className='w-6 h-6 rounded-full left-4 appearance-none'
-                            style={{ WebkitAppearance: 'none' }}  // 적절한 스타일 조정
+                            value={selectedBackgroundColor}
+                            onChange={handleBackgroundColorChange}
+                            className='w-7 h-7 rounded-full border-2 border-gray-300 left-4 appearance-none'
                         />
-                        <span className="text-gray-400 text-base ml-2" onClick={openColorPicker}>배경색</span>
+                        <span className="text-gray-400 text-base ml-2" onClick={openBackgroundColorPicker}>배경색</span>
                     </div>
                 </div>
             </div>

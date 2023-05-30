@@ -60,8 +60,8 @@ const WifiFeed = () => {
                                     src: selectedIcon,
                                     x: undefined,
                                     y: undefined,
-                                    height: 50,
-                                    width: 50,
+                                    height: 80,
+                                    width: 80,
                                     excavate: true,
                                 }
                             })}
