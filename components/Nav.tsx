@@ -9,16 +9,16 @@ const Nav = () => {
   const [toggleDropdown, setToggleDropdown] = useState(false);
 
   return (
-    <nav className='flex-between w-full mb-16 pt-3'>
+    <nav className='flex-between w-full mb-16 pt-5'>
       <Link href='/' className='flex gap-2 flex-center'>
         <Image
-          src='/assets/images/logo.svg'
+          src='/assets/images/link2qr_small.svg'
           alt='logo'
           width={30}
           height={30}
           className='object-contain'
         />
-        <p className='logo_text'>My QR</p>
+        <p className='logo_text'>Link2QR</p>
       </Link>
 
       {/* Desktop Navigation */}
@@ -33,41 +33,48 @@ const Nav = () => {
           <Link href='/vcard' className='menu_btn'>
             연락처 (vCard)
           </Link>
+          {/* Buy Me a Coffee Link */}
+          <a href='https://buymeacoffee.com/fitcoder' className='black_btn' target="_blank" rel="noopener noreferrer">
+            커피 후원
+          </a>
         </div>
       </div>
 
       {/* Mobile Navigation */}
       <div className='sm:hidden flex relative'>
-          <div className='flex'></div>
-          <LuMenu onClick={() => setToggleDropdown(!toggleDropdown)}/>
+        <div className='flex'></div>
+        <LuMenu className="menuicon" onClick={() => setToggleDropdown(!toggleDropdown)} />
 
-              
-            {toggleDropdown && (
-              <div className='dropdown'>
-                <Link
-                  href='/'
-                  className='dropdown_link'
-                  onClick={() => setToggleDropdown(false)}
-                >
-                  링크로 QR 생성
-                </Link>
-                <Link
-                  href='/wifi'
-                  className='dropdown_link'
-                  onClick={() => setToggleDropdown(false)}
-                >
-                  와이파이로 QR 생성
-                </Link>
-                <Link
-                  href='/vcard'
-                  className='dropdown_link'
-                  onClick={() => setToggleDropdown(false)}
-                >
-                  연락처로 QR 생성
-                </Link>
-              </div>
-            )}
+
+        {toggleDropdown && (
+          <div className='dropdown'>
+            <Link
+              href='/'
+              className='dropdown_link'
+              onClick={() => setToggleDropdown(false)}
+            >
+              링크로 QR 생성
+            </Link>
+            <Link
+              href='/wifi'
+              className='dropdown_link'
+              onClick={() => setToggleDropdown(false)}
+            >
+              와이파이로 QR 생성
+            </Link>
+            <Link
+              href='/vcard'
+              className='dropdown_link'
+              onClick={() => setToggleDropdown(false)}
+            >
+              연락처로 QR 생성
+            </Link>
+            <a href='https://buymeacoffee.com/fitcoder' className='dropdown_link' target="_blank" rel="noopener noreferrer">
+              커피 후원
+            </a>
           </div>
+        )}
+      </div>
 
 
     </nav>

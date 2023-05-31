@@ -2,17 +2,14 @@
 
 import React, { useState, useEffect, useRef } from "react";
 import QRCodeStyling from "qr-code-styling";
-// import { QRCodeSVG } from 'qrcode.react';
 import CustomQR from "./CustomQR";
-  
+
 
 const qrCode = new QRCodeStyling({
     width: 300,
     height: 300,
     type: "svg", // Set to SVG
-    // Define other properties and styles
 });
-
 
 const Feed = () => {
     const [input, setInput] = useState("");
@@ -33,22 +30,26 @@ const Feed = () => {
         setBackgroundColor(color);
     };
 
+    const handleIconSelect = (imageData) => {
+        setSelectedIcon(imageData);
+      };
+
     useEffect(() => {
         qrCode.update({
-            data: input || "https://example.com",
-            image: selectedIcon,
-            dotsOptions: {
-                color: foregroundColor,
-            },
-            backgroundOptions: {
-                color: backgroundColor,
-            },
-            // Other options and styles
+          data: input || "imageOptions",
+          image: selectedIcon,
+          dotsOptions: {
+            color: foregroundColor,
+          },
+          backgroundOptions: {
+            color: backgroundColor,
+          }
         });
         if (qrRef.current) {
-            qrCode.append(qrRef.current);
+          qrCode.append(qrRef.current);
         }
-    }, [input, selectedIcon, foregroundColor, backgroundColor]);
+      }, [input, selectedIcon, foregroundColor, backgroundColor]);
+
 
     return (
         <section className='feed'>
@@ -56,15 +57,14 @@ const Feed = () => {
             <form className='relative w-full flex-center flex-col gap-5' onSubmit={e => e.preventDefault()}>
                 <input
                     type='text'
-                    placeholder='링크를 넣어보세요 ex) https://myqr.link'
+                    placeholder='링크를 넣어보세요 ex) https://link2qr.com'
                     value={input}
                     onChange={handleInputChange}
                     className='search_input peer'
                 />
             </form>
-            
-            <div className="feed" ref={qrRef} />
 
+            <div className="feed" ref={qrRef} />
 
             <CustomQR
                 onIconSelect={setSelectedIcon}

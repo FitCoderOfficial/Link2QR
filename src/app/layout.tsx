@@ -1,11 +1,19 @@
 import type { Metadata } from 'next'
 import '../../styles/globals.css'
 import Nav from '../../components/Nav'
+import Head from "next/head";
+
 
 
 export const metadata: Metadata = {
-  title: 'My QR Code',
-  description: 'QR Code Generator',
+  title: {
+    default: "Link2QR",
+    template: "Link2QR | %s",
+  },
+  description: 'QR코드를 쉽게 만들어보세요.링크, 카페 와이파이, 연락처 모두 쉽게 만들 수 있어요!',
+  icons: {
+    icon: "/favicon.ico",
+  },
 }
 
 export default function RootLayout({
@@ -23,7 +31,7 @@ export default function RootLayout({
         <main className='app'>
           <Nav />
           {children}
-          
+
         </main>
       </body>
     </html>

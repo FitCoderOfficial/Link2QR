@@ -1,10 +1,10 @@
 import React, { useState, useRef } from 'react';
 import Image from 'next/image'
+import { CiCirclePlus } from "react-icons/ci"
 
 const CustomQR = ({ onIconSelect, onForegroundColorChange, onBackgroundColorChange }) => {
-    const [showIcons, setShowIcons] = useState(false);
     const logoNames = [
-        "appstore",
+        "link2qr",
         "bitcoin",
         "discord",
         "facebook",
@@ -12,10 +12,8 @@ const CustomQR = ({ onIconSelect, onForegroundColorChange, onBackgroundColorChan
         "gmail",
         "google",
         "googledrive",
-        "googleplay",
         "imessage",
         "instagram2",
-        "instagram3",
         "KakaoTalk",
         "kakaostory",
         "kakaopage",
@@ -54,16 +52,16 @@ const CustomQR = ({ onIconSelect, onForegroundColorChange, onBackgroundColorChan
         "x",
         "youtube",
         "youtube2",
+        "instagram3",
         "zoom",
-
+        "appstore",
+        "googleplay",
     ];
 
     const logos = logoNames.map(name => ({ name, url: `/assets/logos/${name}.svg` }));
 
 
 
-    const [activeMenu, setActiveMenu] = useState('');
-    
     const toggleMenu = (menuName) => {
         if (menuName === '전경색') {
             // 전경색 메뉴를 클릭할 경우 컬러 픽커에 포커스
@@ -71,12 +69,14 @@ const CustomQR = ({ onIconSelect, onForegroundColorChange, onBackgroundColorChan
         }
         setActiveMenu(activeMenu === menuName ? '' : menuName);
     };
-    
-    
+
+    const [showIcons, setShowIcons] = useState(false);
+    const [activeMenu, setActiveMenu] = useState('');
     const [selectedForegroundColor, setSelectedForegroundColor] = useState('##000000'); // 전경색 상태
     const [selectedBackgroundColor, setSelectedBackgroundColor] = useState('#FFFFFF'); // 배경색 상태
     const foregroundColorPickerRef = useRef<HTMLInputElement>(null);
     const backgroundColorPickerRef = useRef<HTMLInputElement>(null);
+    const fileInputRef = useRef(null);
 
     const handleForegroundColorChange = (e) => {
         const newColor = e.target.value;
@@ -96,6 +96,17 @@ const CustomQR = ({ onIconSelect, onForegroundColorChange, onBackgroundColorChan
 
     const openBackgroundColorPicker = () => {
         backgroundColorPickerRef.current?.click();
+    };
+
+    const handleImageUpload = (e) => {
+        const file = e.target.files[0];
+        if (file) {
+            const reader = new FileReader();
+            reader.onload = (event) => {
+                onIconSelect(event.target?.result);
+            };
+            reader.readAsDataURL(file);
+        }
     };
 
 
@@ -134,6 +145,16 @@ const CustomQR = ({ onIconSelect, onForegroundColorChange, onBackgroundColorChan
 
             {activeMenu === '로고' && (
                 <div className="menufeed">
+                    <button onClick={() => fileInputRef.current.click()} className="icon-button">
+                        <CiCirclePlus className="w-16 h-16" />
+                    </button>
+                    <input
+                        ref={fileInputRef}
+                        type="file"
+                        accept=".png, .svg"
+                        onChange={handleImageUpload}
+                        style={{ display: 'none' }}
+                    />
                     {logos.map((logo, index) => (
                         <button key={index} onClick={() => onIconSelect(logo.url)} className="icon-button">
                             <Image

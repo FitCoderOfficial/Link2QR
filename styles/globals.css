@@ -87,8 +87,13 @@
   @apply rounded-full border border-black bg-transparent py-1.5 px-5 text-black transition-all hover:bg-black hover:text-black text-center text-sm font-notosans flex items-center justify-center;
 }
 
+
 .menu_btn {
   @apply rounded-full border border-gray-200 bg-gray-200 py-1.5 px-4 font-bold text-sm text-black transition-all hover:bg-blue-600 hover:text-white;
+}
+
+.menuicon {
+  @apply h-8 w-8
 }
 
 .head_text {
@@ -148,7 +153,7 @@
 
 /* Nav Component */
 .logo_text {
-  @apply max-sm:hidden font-satoshi font-semibold text-lg text-black tracking-wide;
+  @apply max-sm:hidden font-satoshi font-bold text-xl text-black tracking-wide;
 }
 
 .dropdown {
