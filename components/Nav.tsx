@@ -35,7 +35,7 @@ const Nav = () => {
           </Link>
           {/* Buy Me a Coffee Link */}
           <a href='https://buymeacoffee.com/fitcoder' className='black_btn' target="_blank" rel="noopener noreferrer">
-            커피 후원
+            후원하기
           </a>
         </div>
       </div>

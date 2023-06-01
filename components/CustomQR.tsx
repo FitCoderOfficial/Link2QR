@@ -2,7 +2,17 @@ import React, { useState, useRef } from 'react';
 import Image from 'next/image'
 import { CiCirclePlus } from "react-icons/ci"
 
-const CustomQR = ({ onIconSelect, onForegroundColorChange, onBackgroundColorChange }) => {
+
+interface CustomQRProps {
+    onIconSelect: (icon: string) => void;
+    onForegroundColorChange: (color: string) => void;
+    onBackgroundColorChange: (color: string) => void;
+    onDotStyleChange: (style: string) => void;
+    onCornerStyleChange: (cornerStyle: { cornersSquareOptions: { type: string }, cornersDotOptions: { type: string } }) => void;
+}
+
+
+const CustomQR: React.FC<CustomQRProps> = ({ onIconSelect, onForegroundColorChange, onBackgroundColorChange, onDotStyleChange, onCornerStyleChange }) => {
     const logoNames = [
         "link2qr",
         "bitcoin",
@@ -58,6 +68,25 @@ const CustomQR = ({ onIconSelect, onForegroundColorChange, onBackgroundColorChan
         "googleplay",
     ];
 
+
+    const dotStyles = [
+        { style: 'rounded', imageUrl: '/assets/dotstyles/rounded.svg' },
+        { style: 'dots', imageUrl: '/assets/dotstyles/dots.svg' },
+        { style: 'classy', imageUrl: '/assets/dotstyles/classy.svg' },
+        { style: 'classy-rounded', imageUrl: '/assets/dotstyles/classy-rounded.svg' },
+        { style: 'square', imageUrl: '/assets/dotstyles/square.svg' },
+        { style: 'extra-rounded', imageUrl: '/assets/dotstyles/extra-rounded.svg' }
+    ];
+
+    const cornerStyles = [
+        { label: 'square', imageUrl: '/assets/corners/square.svg', cornersSquareOptions: { type: 'square' }, cornersDotOptions: { type: 'square' } },
+        { label: 'fewRounded', imageUrl: '/assets/corners/fewRounded.svg', cornersSquareOptions: { type: 'extra-rounded' }, cornersDotOptions: { type: 'square' } },
+        { label: 'rounded2', imageUrl: '/assets/corners/rounded2.svg', cornersSquareOptions: { type: 'dot' }, cornersDotOptions: { type: 'square' } },
+        { label: 'rounded', imageUrl: '/assets/corners/rounded.svg', cornersSquareOptions: { type: 'extra-rounded' }, cornersDotOptions: { type: 'dot' } },
+        { label: 'dot', imageUrl: '/assets/corners/dot.svg', cornersSquareOptions: { type: 'dot' }, cornersDotOptions: { type: 'dot' } }
+    ];
+
+
     const logos = logoNames.map(name => ({ name, url: `/assets/logos/${name}.svg` }));
 
 
@@ -77,6 +106,8 @@ const CustomQR = ({ onIconSelect, onForegroundColorChange, onBackgroundColorChan
     const foregroundColorPickerRef = useRef<HTMLInputElement>(null);
     const backgroundColorPickerRef = useRef<HTMLInputElement>(null);
     const fileInputRef = useRef(null);
+    const [selectedDotStyle, setSelectedDotStyle] = useState(dotStyles[0]);
+    const [selectedCornerStyle, setSelectedCornerStyle] = useState(cornerStyles[0].label);
 
     const handleForegroundColorChange = (e) => {
         const newColor = e.target.value;
@@ -107,6 +138,17 @@ const CustomQR = ({ onIconSelect, onForegroundColorChange, onBackgroundColorChan
             };
             reader.readAsDataURL(file);
         }
+    };
+
+    const handleDotStyleChange = (dotStyle: string) => {
+        setSelectedDotStyle(dotStyle);
+        onDotStyleChange(dotStyle);
+        // 메뉴가 닫히지 않음 (커스텀 QR 코드 생성을 위해)
+    };
+
+    const handleCornerStyleChange = (cornerStyle) => {
+        setSelectedCornerStyle(cornerStyle.label);
+        onCornerStyleChange(cornerStyle);
     };
 
 
@@ -170,9 +212,44 @@ const CustomQR = ({ onIconSelect, onForegroundColorChange, onBackgroundColorChan
             )}
 
             {activeMenu === '모양' && (
-                <div className="bg-white rounded-lg shadow-xl px-4 py-6 mt-1">
-                    {/* Status Dropdown Content */}
+                <div className="menufeed">
+                    {dotStyles.map(({ style, imageUrl }, index) => (
+                        <button
+                            key={index}
+                            onClick={() => handleDotStyleChange(style)}
+                            className={`shape-button mt-4 ${style === selectedDotStyle ? 'ring-4 ring-blue-600 rounded-md' : ''}`}
+                        >
+                            <Image
+                                src={imageUrl}
+                                alt={`Dot style ${style}`}
+                                width={50}
+                                height={50}
+                                className='object-contain'
+                            />
+                        </button>
+                    ))}
+
+
+                    <div className="mt-4 px-4 py-6 flex flex-wrap justify-center gap-8">
+                        {cornerStyles.map(({ label, imageUrl, cornersSquareOptions, cornersDotOptions }, index) => (
+                            <button
+                                key={index}
+                                onClick={() => handleCornerStyleChange({ cornersSquareOptions, cornersDotOptions, label })}
+                                className={`corner-button ${label === selectedCornerStyle ? 'ring-4 ring-blue-600 rounded-md' : ''}`}
+                            >
+                                <Image
+                                    src={imageUrl}
+                                    alt={`Corner style ${label}`}
+                                    width={50}
+                                    height={50}
+                                    className='object-contain'
+                                />
+                            </button>
+                        ))}
+                    </div>
                 </div>
+
+
             )}
 
         </div>
