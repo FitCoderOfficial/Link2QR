@@ -1,7 +1,7 @@
 import type { Metadata } from 'next'
 import '../../styles/globals.css'
 import Nav from '../../components/Nav'
-import Head from "next/head";
+import Footer from '../../components/Footer';
 
 
 
@@ -31,7 +31,7 @@ export default function RootLayout({
         <main className='app'>
           <Nav />
           {children}
-
+          <Footer />
         </main>
       </body>
     </html>

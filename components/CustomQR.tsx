@@ -186,7 +186,7 @@ const CustomQR: React.FC<CustomQRProps> = ({ onIconSelect, onForegroundColorChan
 
 
     return (
-        <div className="dropdown-menu feed ">
+        <div className="dropdownmenu feed ">
             <div className="w-full bg-white rounded-lg shadow-xl flex justify-between items-center px-10 py-3">
                 {['로고', '모양',].map((item) => (
                     <div key={item} onClick={() => toggleMenu(item)} className="cursor-pointer">
@@ -303,17 +303,17 @@ const CustomQR: React.FC<CustomQRProps> = ({ onIconSelect, onForegroundColorChan
             {activeMenu === '그라데이션' && !trackForegroundColor && (
                 <div className="menufeed">
                     {/* 그라데이션 설정 UI */}
-                    <div className="flex flex-col items-center">
+                    <div className="flex flex-col items-center w-full">
                         <input
                             type="range"
                             min="0"
                             max="30"
                             value={selectedGradientData.direction}
                             onChange={handleGradientDirectionChange}
-                            className='w-full '
+                            className='w-full h-4 appearance-none bg-gray-300 rounded-md overflow-hidden' // 막대의 길이를 확장
                         />
                         {/* 휴지통 아이콘 추가 및 클릭 이벤트 핸들러 연결 */}
-                        <FaTrash className="w-6 h-6 mt-2" onClick={handleResetGradient} />
+                        <FaTrash className="w-6 h-6 mt-2 text-gray-500" onClick={handleResetGradient} />
                     </div>
                 </div>
             )}
