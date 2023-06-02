@@ -70,7 +70,7 @@ const Nav = () => {
               연락처로 QR 생성
             </Link>
             <a href='https://buymeacoffee.com/fitcoder' className='dropdown_link' target="_blank" rel="noopener noreferrer">
-              커피 후원
+              후원하기
             </a>
           </div>
         )}
