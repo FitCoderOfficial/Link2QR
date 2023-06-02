@@ -93,7 +93,7 @@ const CustomQR: React.FC<CustomQRProps> = ({ onIconSelect, onForegroundColorChan
 
 
 
-    const toggleMenu = (menuName) => {
+    const toggleMenu = (menuName:string) => {
         if (menuName === '전경색') {
             // 전경색 메뉴를 클릭할 경우 컬러 픽커에 포커스
             colorPickerRef.current?.focus();
@@ -102,7 +102,7 @@ const CustomQR: React.FC<CustomQRProps> = ({ onIconSelect, onForegroundColorChan
     };
 
     const [activeMenu, setActiveMenu] = useState('');
-    const [selectedForegroundColor, setSelectedForegroundColor] = useState('##000000'); // 전경색 상태
+    const [selectedForegroundColor, setSelectedForegroundColor] = useState('#000000'); // 전경색 상태
     const [selectedBackgroundColor, setSelectedBackgroundColor] = useState('#FFFFFF'); // 배경색 상태
     const foregroundColorPickerRef = useRef<HTMLInputElement>(null);
     const backgroundColorPickerRef = useRef<HTMLInputElement>(null);
