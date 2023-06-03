@@ -21,7 +21,7 @@ const Feed = () => {
     const [gradientData, setGradientData] = useState({ startColor: '', endColor: '', direction: 0 });
     const qrRef = useRef(null);
 
-    const handleInputChange = (e) => {
+    const handleInputChange = (e: React.FormEvent<HTMLFormElement>) => {
         setInput(e.target.value);
     };
 
@@ -76,12 +76,16 @@ const Feed = () => {
     }, [input, selectedIcon, foregroundColor, backgroundColor, dotStyle, cornerStyle, gradientData]);
 
 
+    // Define the type for file extensions
+    type FileExtension = 'png' | 'jpeg' | 'webp' | 'svg';
+
     // 기타 state 선언
-    const [fileExt, setFileExt] = useState("png"); // 파일 확장자 상태
+    const [fileExt, setFileExt] = useState<FileExtension>('png'); // 파일 확장자 상태
 
     // 파일 확장자 변경 핸들러
-    const onExtensionChange = (event) => {
-        setFileExt(event.target.value);
+    const onExtensionChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
+        const value = event.target.value as FileExtension;
+        setFileExt(value);
     };
 
     // 다운로드 버튼 클릭 핸들러

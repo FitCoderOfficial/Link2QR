@@ -14,6 +14,13 @@ interface CustomQRProps {
 }
 
 
+interface CornerStyleType {
+    label: string;
+    cornersSquareOptions: { type: string };
+    cornersDotOptions: { type: string };
+}
+
+
 const CustomQR: React.FC<CustomQRProps> = ({ onIconSelect, onForegroundColorChange, onBackgroundColorChange, onDotStyleChange, onCornerStyleChange, onGradientChange }) => {
     const logoNames = [
         "link2qr",
@@ -93,11 +100,7 @@ const CustomQR: React.FC<CustomQRProps> = ({ onIconSelect, onForegroundColorChan
 
 
 
-    const toggleMenu = (menuName:string) => {
-        if (menuName === '전경색') {
-            // 전경색 메뉴를 클릭할 경우 컬러 픽커에 포커스
-            colorPickerRef.current?.focus();
-        }
+    const toggleMenu = (menuName: string) => {
         setActiveMenu(activeMenu === menuName ? '' : menuName);
     };
 
@@ -107,19 +110,20 @@ const CustomQR: React.FC<CustomQRProps> = ({ onIconSelect, onForegroundColorChan
     const foregroundColorPickerRef = useRef<HTMLInputElement>(null);
     const backgroundColorPickerRef = useRef<HTMLInputElement>(null);
     const gradientColorPickerRef = useRef<HTMLInputElement>(null);
-    const fileInputRef = useRef(null);
+    const fileInputRef = useRef<HTMLInputElement>(null);
     const [selectedDotStyle, setSelectedDotStyle] = useState(dotStyles[0]);
     const [selectedCornerStyle, setSelectedCornerStyle] = useState(cornerStyles[0].label);
     const [selectedGradientData, setSelectedGradientData] = useState({ startColor: '', endColor: '', direction: 0 });
     const [trackForegroundColor, setTrackForegroundColor] = useState(true);
 
-    const handleForegroundColorChange = (e) => {
+
+    const handleForegroundColorChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         const newColor = e.target.value;
         setSelectedForegroundColor(newColor);
         onForegroundColorChange(newColor); // 부모 컴포넌트에 전경색 변경 알림
     };
 
-    const handleBackgroundColorChange = (e) => {
+    const handleBackgroundColorChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         const newColor = e.target.value;
         setSelectedBackgroundColor(newColor);
         onBackgroundColorChange(newColor); // 부모 컴포넌트에 배경색 변경 알림
@@ -137,36 +141,42 @@ const CustomQR: React.FC<CustomQRProps> = ({ onIconSelect, onForegroundColorChan
         gradientColorPickerRef.current?.click();
     };
 
-    const handleImageUpload = (e) => {
-        const file = e.target.files[0];
-        if (file) {
+    const handleImageUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
+        if (e.target.files && e.target.files.length > 0) {
+            const file = e.target.files[0];
             const reader = new FileReader();
-            reader.onload = (event) => {
-                onIconSelect(event.target?.result);
+            reader.onload = (event: ProgressEvent<FileReader>) => {
+                if (event.target && typeof event.target.result === 'string') {
+                    onIconSelect(event.target.result);
+                }
             };
             reader.readAsDataURL(file);
         }
     };
 
-    const handleDotStyleChange = (dotStyle: string) => {
-        setSelectedDotStyle(dotStyle);
-        onDotStyleChange(dotStyle);
-        // 메뉴가 닫히지 않음 (커스텀 QR 코드 생성을 위해)
+    const handleDotStyleChange = (dotStyleName: string) => {
+        // dotStyles 배열에서 일치하는 스타일 객체를 찾음
+        const selectedStyle = dotStyles.find(style => style.style === dotStyleName);
+
+        if (selectedStyle) {
+            setSelectedDotStyle(selectedStyle); // 찾은 객체를 상태로 설정
+            onDotStyleChange(dotStyleName); // 부모 컴포넌트에 스타일 변경 알림
+        }
     };
 
-    const handleCornerStyleChange = (cornerStyle) => {
+    const handleCornerStyleChange = (cornerStyle: CornerStyleType) => {
         setSelectedCornerStyle(cornerStyle.label);
         onCornerStyleChange(cornerStyle);
     };
 
-    const handleGradientEndColorChange = (e) => {
+    const handleGradientEndColorChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         const newGradientData = { ...selectedGradientData, endColor: e.target.value };
         setSelectedGradientData(newGradientData);
         onGradientChange(newGradientData);
         setTrackForegroundColor(false); // 그라데이션 색상 선택시 추적 해제
     };
 
-    const handleGradientDirectionChange = (e) => {
+    const handleGradientDirectionChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         const newGradientData = { ...selectedGradientData, direction: parseFloat(e.target.value) };
         setSelectedGradientData(newGradientData);
         onGradientChange(newGradientData);
@@ -220,8 +230,8 @@ const CustomQR: React.FC<CustomQRProps> = ({ onIconSelect, onForegroundColorChan
                 <div onClick={() => toggleMenu('그라데이션')} className="cursor-pointer">
                     <div className="flex items-center text-gray-400 text-base">
                         <div className="relative w-7 h-7 rounded-full border-2 border-gray-300">
-                        <div className={`absolute top-0 left-0 w-full h-full rounded-full ${trackForegroundColor ? "bg-gradient-to-r from-indigo-500 via-purple-500 to-pink-500" : ""}`}
-                 style={{ background: trackForegroundColor ? "" : selectedGradientData.endColor }} />
+                            <div className={`absolute top-0 left-0 w-full h-full rounded-full ${trackForegroundColor ? "bg-gradient-to-r from-indigo-500 via-purple-500 to-pink-500" : ""}`}
+                                style={{ background: trackForegroundColor ? "" : selectedGradientData.endColor }} />
                             <input
                                 ref={gradientColorPickerRef}
                                 type="color"
@@ -237,7 +247,11 @@ const CustomQR: React.FC<CustomQRProps> = ({ onIconSelect, onForegroundColorChan
 
             {activeMenu === '로고' && (
                 <div className="menufeed">
-                    <button onClick={() => fileInputRef.current.click()} className="icon-button">
+                    <button onClick={() => {
+                        if (fileInputRef.current) {
+                            fileInputRef.current.click();
+                        }
+                    }} className="icon-button">
                         <CiCirclePlus className="w-16 h-16" />
                     </button>
                     <input
@@ -267,7 +281,7 @@ const CustomQR: React.FC<CustomQRProps> = ({ onIconSelect, onForegroundColorChan
                         <button
                             key={index}
                             onClick={() => handleDotStyleChange(style)}
-                            className={`shape-button mt-4 ${style === selectedDotStyle ? 'ring-4 ring-blue-600 rounded-md' : ''}`}
+                            className={`shape-button mt-4 ${style === selectedDotStyle.style ? 'ring-4 ring-blue-600 rounded-md' : ''}`}
                         >
                             <Image
                                 src={imageUrl}

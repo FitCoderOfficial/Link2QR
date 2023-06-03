@@ -67,7 +67,12 @@ const Footer = () => {
     );
 }
 
-const FooterColumn = ({ title, children }) => (
+type FooterColumnProps = {
+    title: string;
+    children: React.ReactNode;
+  };
+
+  const FooterColumn: React.FC<FooterColumnProps> = ({ title, children }) => (
     <div className="flex flex-col gap-5">
         <h4 className="text-lg font-semibold">{title}</h4>
         {children}

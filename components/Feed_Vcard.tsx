@@ -11,6 +11,40 @@ const qrCode = new QRCodeStyling({
     type: "svg",
 });
 
+type DotType = 'square' | 'dots';
+
+type CornerSquareType = 'square' | 'dot' | 'extra-rounded'; // Add all allowed values
+
+type CornerStyleOption = {
+    label: string;
+    imageUrl: string;
+    cornersSquareOptions: { type: CornerSquareType };
+    cornersDotOptions: { type: CornerDotType };
+  };
+
+type CornerDotType = 'square' | 'dot'  // Add all allowed values
+
+interface CornerStyle {
+    cornersSquareOptions: { type: CornerSquareType };
+    cornersDotOptions: { type: string }; // Modify as needed
+  }
+
+  const cornerStyles: CornerStyleOption[] = [
+    {
+      label: 'Square',
+      imageUrl: '/assets/corners/square.svg',
+      cornersSquareOptions: { type: 'square' },
+      cornersDotOptions: { type: 'square' }
+    },
+    {
+      label: 'Dot',
+      imageUrl: '/assets/corners/dot.svg',
+      cornersSquareOptions: { type: 'dot' },
+      cornersDotOptions: { type: 'dot' }
+    },
+  ];
+
+
 const Feed_Vcard = () => {
     const [name, setName] = useState("");
     const [email, setEmail] = useState("");
@@ -19,12 +53,16 @@ const Feed_Vcard = () => {
     const [selectedIcon, setSelectedIcon] = useState('');
     const [foregroundColor, setForegroundColor] = useState('#000000');
     const [backgroundColor, setBackgroundColor] = useState('#FFFFFF');
-    const [dotStyle, setDotStyle] = useState('square');
-    const [cornerStyle, setCornerStyle] = useState({ cornersSquareOptions: { type: 'square' }, cornersDotOptions: { type: 'square' } });
+    const [dotStyle, setDotStyle] = useState<DotType>('square');
+    const [cornerStyle, setCornerStyle] = useState<CornerStyle>({
+        cornersSquareOptions: { type: 'square' },
+        cornersDotOptions: { type: 'square' }
+      });
     const [gradientData, setGradientData] = useState({ startColor: '', endColor: '', direction: 0 });
     const qrRef = useRef(null);
 
-    const handleSubmit = (e) => {
+
+    const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault(); // 폼 제출 시 페이지 새로고침 방지 Prevents form submission from reloading the page
     };
 
@@ -61,19 +99,22 @@ const Feed_Vcard = () => {
         }
     }, [name, email, phone, address, selectedIcon, foregroundColor, backgroundColor, dotStyle, cornerStyle, gradientData]);
 
+    // Define the type for file extensions
+    type FileExtension = 'png' | 'jpeg' | 'webp' | 'svg';
+
     // 기타 state 선언
-    const [fileExt, setFileExt] = useState("png"); // 파일 확장자 상태
+    const [fileExt, setFileExt] = useState<FileExtension>('png'); // 파일 확장자 상태
 
     // 파일 확장자 변경 핸들러
-    const onExtensionChange = (event) => {
-        setFileExt(event.target.value);
+    const onExtensionChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
+        const value = event.target.value as FileExtension;
+        setFileExt(value);
     };
 
     // 다운로드 버튼 클릭 핸들러
     const onDownloadClick = () => {
         qrCode.download({ extension: fileExt });
     };
-
 
     return (
         <section className='feed'>
