@@ -3,6 +3,7 @@
 import React, { useState, useRef, useEffect } from "react";
 import QRCodeStyling from "qr-code-styling";
 import CustomQR from "./CustomQR";
+import { DotType, Options, CornerSquareType, CornerDotType } from 'qr-code-styling'; // Import the necessary types
 
 
 const qrCode = new QRCodeStyling({
@@ -11,38 +12,6 @@ const qrCode = new QRCodeStyling({
     type: "svg",
 });
 
-type DotType = 'square' | 'dots';
-
-type CornerSquareType = 'square' | 'dot' | 'extra-rounded'; // Add all allowed values
-
-type CornerStyleOption = {
-    label: string;
-    imageUrl: string;
-    cornersSquareOptions: { type: CornerSquareType };
-    cornersDotOptions: { type: CornerDotType };
-  };
-
-type CornerDotType = 'square' | 'dot'  // Add all allowed values
-
-interface CornerStyle {
-    cornersSquareOptions: { type: CornerSquareType };
-    cornersDotOptions: { type: string }; // Modify as needed
-  }
-
-  const cornerStyles: CornerStyleOption[] = [
-    {
-      label: 'Square',
-      imageUrl: '/assets/corners/square.svg',
-      cornersSquareOptions: { type: 'square' },
-      cornersDotOptions: { type: 'square' }
-    },
-    {
-      label: 'Dot',
-      imageUrl: '/assets/corners/dot.svg',
-      cornersSquareOptions: { type: 'dot' },
-      cornersDotOptions: { type: 'dot' }
-    },
-  ];
 
 
 const Feed_Vcard = () => {
@@ -53,11 +22,11 @@ const Feed_Vcard = () => {
     const [selectedIcon, setSelectedIcon] = useState('');
     const [foregroundColor, setForegroundColor] = useState('#000000');
     const [backgroundColor, setBackgroundColor] = useState('#FFFFFF');
-    const [dotStyle, setDotStyle] = useState<DotType>('square');
-    const [cornerStyle, setCornerStyle] = useState<CornerStyle>({
+    const [dotStyle, setDotStyle] = useState<string>('square'); // Default dot style
+    const [cornerStyle, setCornerStyle] = useState<{ cornersSquareOptions: { type: string }; cornersDotOptions: { type: string } }>({
         cornersSquareOptions: { type: 'square' },
-        cornersDotOptions: { type: 'square' }
-      });
+        cornersDotOptions: { type: 'square' },
+    });
     const [gradientData, setGradientData] = useState({ startColor: '', endColor: '', direction: 0 });
     const qrRef = useRef(null);
 
@@ -72,28 +41,34 @@ const Feed_Vcard = () => {
     };
 
     useEffect(() => {
-        qrCode.update({
-            data: generateVCardQRCodeValue(),
+        const qrOptions: Partial<Options> = {
+            data: generateVCardQRCodeValue() || "https://link2qr.com",
             image: selectedIcon,
             dotsOptions: {
-                color: foregroundColor,
-                type: dotStyle,
+                type: dotStyle as DotType, // Ensure dotStyle is of type DotType
                 gradient: {
                     type: "linear",
-                    rotation: gradientData.direction, // Assuming you have a state for gradient direction
+                    rotation: gradientData.direction,
                     colorStops: [
                         { offset: 0, color: gradientData.startColor || foregroundColor },
-                        { offset: 1, color: gradientData.endColor || '#000000' } // Default to white if no end color
-                    ]
-                }
+                        { offset: 1, color: gradientData.endColor || '#000000' }
+                    ],
+                },
             },
             backgroundOptions: {
                 color: backgroundColor,
             },
-            cornersSquareOptions: cornerStyle.cornersSquareOptions,
-            cornersDotOptions: cornerStyle.cornersDotOptions,
-        });
-
+            cornersSquareOptions: {
+                type: 'square' as CornerSquareType, // Ensure type is of type CornerSquareType
+                // Other properties for cornersSquareOptions
+            },
+            cornersDotOptions: {
+                type: 'square' as CornerDotType, // Ensure type is of type CornerDotType
+                // Other properties for cornersDotOptions
+            },
+        };
+    
+        qrCode.update(qrOptions);
         if (qrRef.current) {
             qrCode.append(qrRef.current);
         }
