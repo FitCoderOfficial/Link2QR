@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState, useEffect, useRef } from "react";
+import React, { useState, useEffect, useRef, ChangeEvent, FormEvent } from "react";
 import QRCodeStyling from "qr-code-styling";
 import CustomQR from "./CustomQR";
 
@@ -12,37 +12,49 @@ const qrCode = new QRCodeStyling({
 });
 
 const Feed = () => {
-    const [input, setInput] = useState("");
-    const [selectedIcon, setSelectedIcon] = useState('');
-    const [foregroundColor, setForegroundColor] = useState('#000000');
-    const [backgroundColor, setBackgroundColor] = useState('#FFFFFF');
-    const [dotStyle, setDotStyle] = useState('square'); // Default dot style
-    const [cornerStyle, setCornerStyle] = useState({ cornersSquareOptions: { type: 'square' }, cornersDotOptions: { type: 'square' } });
-    const [gradientData, setGradientData] = useState({ startColor: '', endColor: '', direction: 0 });
-    const qrRef = useRef(null);
+    const [input, setInput] = useState<string>("");
+    const [selectedIcon, setSelectedIcon] = useState<string>('');
+    const [foregroundColor, setForegroundColor] = useState<string>('#000000');
+    const [backgroundColor, setBackgroundColor] = useState<string>('#FFFFFF');
+    const [dotStyle, setDotStyle] = useState<string>('square'); // Default dot style
+    const [cornerStyle, setCornerStyle] = useState<{ cornersSquareOptions: { type: string }; cornersDotOptions: { type: string } }>({
+        cornersSquareOptions: { type: 'square' },
+        cornersDotOptions: { type: 'square' },
+    });
+    const [gradientData, setGradientData] = useState<{ startColor: string; endColor: string; direction: number }>({
+        startColor: '',
+        endColor: '',
+        direction: 0,
+    });
+    const qrRef = useRef<HTMLDivElement | null>(null);
 
-    const handleInputChange = (e: React.FormEvent<HTMLFormElement>) => {
+
+
+    const handleInputChange = (e: ChangeEvent<HTMLInputElement>) => {
         setInput(e.target.value);
     };
 
-    const handleForegroundColorChange = (color) => {
+    const handleForegroundColorChange = (color: string) => {
         setForegroundColor(color);
     };
 
-    const handleBackgroundColorChange = (color) => {
+    const handleBackgroundColorChange = (color: string) => {
         setBackgroundColor(color);
     };
 
 
-    const handleDotStyleChange = (style) => {
+    const handleDotStyleChange = (style: string) => {
         setDotStyle(style);
     };
 
-    const handleCornerStyleChange = (newCornerStyle) => {
+    const handleCornerStyleChange = (newCornerStyle: {
+        cornersSquareOptions: { type: string };
+        cornersDotOptions: { type: string };
+    }) => {
         setCornerStyle(newCornerStyle);
     };
 
-    const handleGradientChange = (gradient) => {
+    const handleGradientChange = (gradient: { startColor: string; endColor: string; direction: number }) => {
         setGradientData(gradient);
     };
 
