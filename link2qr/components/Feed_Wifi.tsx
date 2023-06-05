@@ -5,6 +5,12 @@ import QRCodeStyling from "qr-code-styling";
 import { DotType, Options, CornerSquareType, CornerDotType } from 'qr-code-styling'; // Import the necessary types
 import CustomQR from "./CustomQR";
 
+const qrCode = new QRCodeStyling({
+    width: 300,
+    height: 300,
+    type: "svg",
+});
+
 
 
 const WifiFeed = () => {
@@ -20,8 +26,7 @@ const WifiFeed = () => {
         cornersDotOptions: { type: 'square' },
     });
     const [gradientData, setGradientData] = useState({ startColor: '', endColor: '', direction: 0 });
-    const qrRef = useRef<HTMLDivElement | null>(null);
-    const [qrCode, setQrCode] = useState<QRCodeStyling | null>(null); // QRCodeStyling 인스턴스를 위한 state
+    const qrRef = useRef(null);
 
     const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault(); // 폼 제출 시 페이지 새로고침 방지 Prevents form submission from reloading the page
@@ -47,31 +52,11 @@ const WifiFeed = () => {
 
     // 다운로드 버튼 클릭 핸들러
     const onDownloadClick = () => {
-        qrCode?.download({ extension: fileExt });
+        qrCode.download({ extension: fileExt });
     };
-
     useEffect(() => {
-        // 클라이언트 측에서만 QRCodeStyling 모듈을 동적으로 가져오기
-        if (typeof window !== "undefined") {
-            import("qr-code-styling")
-                .then(({ default: QRCodeStyling }) => {
-                    const newQrCode = new QRCodeStyling({
-                        width: 300,
-                        height: 300,
-                        type: "svg",
-                        data: "https://link2qr.com", // 기본 데이터 설정
-                    });
-
-                    setQrCode(newQrCode);
-                    
-                });
-        }
-    }, []);
-
-    useEffect(() => {
-        if (!qrCode) return;
         const qrOptions: Partial<Options> = {
-            data: generateWifiQRCodeValue(),
+            data: generateWifiQRCodeValue() || "https://link2qr.com",
             image: selectedIcon,
             dotsOptions: {
                 type: dotStyle as DotType, // Ensure dotStyle is of type DotType
@@ -87,16 +72,21 @@ const WifiFeed = () => {
             backgroundOptions: {
                 color: backgroundColor,
             },
-            cornersSquareOptions: cornerStyle.cornersSquareOptions.type as unknown as CornerSquareType,
-            cornersDotOptions: cornerStyle.cornersDotOptions.type as unknown as CornerDotType,
+            cornersSquareOptions: {
+                type: 'square' as CornerSquareType, // Ensure type is of type CornerSquareType
+                // Other properties for cornersSquareOptions
+            },
+            cornersDotOptions: {
+                type: 'square' as CornerDotType, // Ensure type is of type CornerDotType
+                // Other properties for cornersDotOptions
+            },
         };
-
+    
         qrCode.update(qrOptions);
         if (qrRef.current) {
             qrCode.append(qrRef.current);
         }
     }, [ssid, password, security, selectedIcon, foregroundColor, backgroundColor, dotStyle, cornerStyle, gradientData]);
-
 
     return (
         <section className='feed'>

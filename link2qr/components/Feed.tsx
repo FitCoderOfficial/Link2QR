@@ -6,12 +6,11 @@ import { DotType, Options, CornerSquareType, CornerDotType } from 'qr-code-styli
 import CustomQR from "./CustomQR";
 
 
-// const qrCode = new QRCodeStyling({
-//     width: 300,
-//     height: 300,
-//     type: "svg", // Set to SVG
-// });
-
+const qrCode = new QRCodeStyling({
+    width: 300,
+    height: 300,
+    type: "svg", // Set to SVG
+});
 
 const Feed = () => {
     const [input, setInput] = useState<string>("");
@@ -29,7 +28,7 @@ const Feed = () => {
         direction: 0,
     });
     const qrRef = useRef<HTMLDivElement | null>(null);
-    const [qrCode, setQrCode] = useState<QRCodeStyling | null>(null); // QRCodeStyling 인스턴스를 위한 state
+
 
 
     const handleInputChange = (e: ChangeEvent<HTMLInputElement>) => {
@@ -61,25 +60,6 @@ const Feed = () => {
     };
 
     useEffect(() => {
-        // 클라이언트 측에서만 QRCodeStyling 모듈을 동적으로 가져오기
-        if (typeof window !== "undefined") {
-            import("qr-code-styling")
-                .then(({ default: QRCodeStyling }) => {
-                    const newQrCode = new QRCodeStyling({
-                        width: 300,
-                        height: 300,
-                        type: "svg",
-                        data: "https://link2qr.com", // 기본 데이터 설정
-                    });
-
-                    setQrCode(newQrCode);
-                    
-                });
-        }
-    }, []);
-
-    useEffect(() => {
-        if (!qrCode) return;
         const qrOptions: Partial<Options> = {
             data: input || "https://link2qr.com",
             image: selectedIcon,
@@ -97,16 +77,21 @@ const Feed = () => {
             backgroundOptions: {
                 color: backgroundColor,
             },
-            cornersSquareOptions: cornerStyle.cornersSquareOptions.type as unknown as CornerSquareType,
-            cornersDotOptions: cornerStyle.cornersDotOptions.type as unknown as CornerDotType,
+            cornersSquareOptions: {
+                type: 'square' as CornerSquareType, // Ensure type is of type CornerSquareType
+                // Other properties for cornersSquareOptions
+            },
+            cornersDotOptions: {
+                type: 'square' as CornerDotType, // Ensure type is of type CornerDotType
+                // Other properties for cornersDotOptions
+            },
         };
-
+    
         qrCode.update(qrOptions);
         if (qrRef.current) {
             qrCode.append(qrRef.current);
         }
     }, [input, selectedIcon, foregroundColor, backgroundColor, dotStyle, cornerStyle, gradientData]);
-
 
 
     // Define the type for file extensions
@@ -123,7 +108,7 @@ const Feed = () => {
 
     // 다운로드 버튼 클릭 핸들러
     const onDownloadClick = () => {
-        qrCode?.download({ extension: fileExt });
+        qrCode.download({ extension: fileExt });
     };
 
 

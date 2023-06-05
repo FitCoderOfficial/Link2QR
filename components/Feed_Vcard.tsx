@@ -6,14 +6,6 @@ import CustomQR from "./CustomQR";
 import { DotType, Options, CornerSquareType, CornerDotType } from 'qr-code-styling'; // Import the necessary types
 
 
-const qrCode = new QRCodeStyling({
-    width: 300,
-    height: 300,
-    type: "svg",
-});
-
-
-
 const Feed_Vcard = () => {
     const [name, setName] = useState("");
     const [email, setEmail] = useState("");
@@ -28,7 +20,8 @@ const Feed_Vcard = () => {
         cornersDotOptions: { type: 'square' },
     });
     const [gradientData, setGradientData] = useState({ startColor: '', endColor: '', direction: 0 });
-    const qrRef = useRef(null);
+    const qrRef = useRef<HTMLDivElement | null>(null);
+    const [qrCode, setQrCode] = useState<QRCodeStyling | null>(null); // QRCodeStyling 인스턴스를 위한 state
 
 
     const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
@@ -41,8 +34,27 @@ const Feed_Vcard = () => {
     };
 
     useEffect(() => {
+        // 클라이언트 측에서만 QRCodeStyling 모듈을 동적으로 가져오기
+        if (typeof window !== "undefined") {
+            import("qr-code-styling")
+                .then(({ default: QRCodeStyling }) => {
+                    const newQrCode = new QRCodeStyling({
+                        width: 300,
+                        height: 300,
+                        type: "svg",
+                        data: "https://link2qr.com", // 기본 데이터 설정
+                    });
+
+                    setQrCode(newQrCode);
+                    
+                });
+        }
+    }, []);
+
+    useEffect(() => {
+        if (!qrCode) return;
         const qrOptions: Partial<Options> = {
-            data: generateVCardQRCodeValue() || "https://link2qr.com",
+            data: generateVCardQRCodeValue(),
             image: selectedIcon,
             dotsOptions: {
                 type: dotStyle as DotType, // Ensure dotStyle is of type DotType
@@ -58,16 +70,10 @@ const Feed_Vcard = () => {
             backgroundOptions: {
                 color: backgroundColor,
             },
-            cornersSquareOptions: {
-                type: 'square' as CornerSquareType, // Ensure type is of type CornerSquareType
-                // Other properties for cornersSquareOptions
-            },
-            cornersDotOptions: {
-                type: 'square' as CornerDotType, // Ensure type is of type CornerDotType
-                // Other properties for cornersDotOptions
-            },
+            cornersSquareOptions: cornerStyle.cornersSquareOptions.type as unknown as CornerSquareType,
+            cornersDotOptions: cornerStyle.cornersDotOptions.type as unknown as CornerDotType,
         };
-    
+
         qrCode.update(qrOptions);
         if (qrRef.current) {
             qrCode.append(qrRef.current);
@@ -88,7 +94,7 @@ const Feed_Vcard = () => {
 
     // 다운로드 버튼 클릭 핸들러
     const onDownloadClick = () => {
-        qrCode.download({ extension: fileExt });
+        qrCode?.download({ extension: fileExt });
     };
 
     return (

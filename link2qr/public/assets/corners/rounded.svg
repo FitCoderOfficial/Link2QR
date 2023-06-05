@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<!-- Generator: Adobe Illustrator 18.0.0, SVG Export Plug-In . SVG Version: 6.00 Build 0)  -->
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
+<svg version="1.1" id="&#x421;&#x43B;&#x43E;&#x439;_1"
+	 xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" viewBox="0 0 60.345 60.345"
+	 style="enable-background:new 0 0 60.345 60.345;" xml:space="preserve">
+<g>
+	<defs>
+		<path id="SVGID_1_" d="M0,21.552v17.241c0,11.903,9.649,21.552,21.552,21.552c0,0,0,0,0,0h17.241
+			c11.903,0,21.552-9.649,21.552-21.552l0,0V21.552C60.345,9.649,50.696,0,38.793,0l0,0H21.552C9.649,0,0,9.649,0,21.552L0,21.552
+			 M21.552,8.621h17.241c7.142,0,12.931,5.789,12.931,12.931l0,0v17.241c0,7.142-5.789,12.931-12.931,12.931l0,0H21.552
+			c-7.142,0-12.931-5.789-12.931-12.931V21.552C8.621,14.41,14.41,8.621,21.552,8.621"/>
+	</defs>
+	<defs>
+		<circle id="SVGID_2_" cx="30.172" cy="30.172" r="12.931"/>
+	</defs>
+	<use xlink:href="#SVGID_1_"  style="overflow:visible;"/>
+	<use xlink:href="#SVGID_2_"  style="overflow:visible;"/>
+	<clipPath id="SVGID_3_">
+		<use xlink:href="#SVGID_1_"  style="overflow:visible;"/>
+	</clipPath>
+	<clipPath id="SVGID_4_" style="clip-path:url(#SVGID_3_);">
+		<use xlink:href="#SVGID_2_"  style="overflow:visible;"/>
+	</clipPath>
+</g>
+</svg>
