@@ -110,7 +110,7 @@ const Feed = () => {
     return (
         <section className='feed'>
 
-            <form className='relative w-full flex-center flex-col gap-5' onSubmit={e => e.preventDefault()}>
+            <form className='relative w-full flex-center flex-col gap-5' onSubmit={(e: FormEvent) => e.preventDefault()}>
                 <input
                     type='text'
                     placeholder='링크를 넣어보세요 ex) https://link2qr.com'
