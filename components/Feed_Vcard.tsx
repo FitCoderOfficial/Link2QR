@@ -46,7 +46,10 @@ const Feed_Vcard = () => {
                     });
 
                     setQrCode(newQrCode);
-                    
+                    if (qrRef.current) {
+                        newQrCode.append(qrRef.current);
+                        console.log("QR Code appended to the DOM");
+                    }
                 });
         }
     }, []);
@@ -54,7 +57,7 @@ const Feed_Vcard = () => {
     useEffect(() => {
         if (!qrCode) return;
         const qrOptions: Partial<Options> = {
-            data: generateVCardQRCodeValue(),
+            data: generateVCardQRCodeValue() || "https://link2qr.com",
             image: selectedIcon,
             dotsOptions: {
                 type: dotStyle as DotType, // Ensure dotStyle is of type DotType
@@ -70,15 +73,16 @@ const Feed_Vcard = () => {
             backgroundOptions: {
                 color: backgroundColor,
             },
-            cornersSquareOptions: cornerStyle.cornersSquareOptions.type as unknown as CornerSquareType,
-            cornersDotOptions: cornerStyle.cornersDotOptions.type as unknown as CornerDotType,
+            cornersSquareOptions: {
+                type: cornerStyle.cornersSquareOptions.type as CornerSquareType, // Ensure type is of type CornerSquareType
+            },
+            cornersDotOptions: {
+                type: cornerStyle.cornersDotOptions.type as CornerDotType, // Ensure type is of type CornerDotType
+            },
         };
 
         qrCode.update(qrOptions);
-        if (qrRef.current) {
-            qrCode.append(qrRef.current);
-        }
-    }, [name, email, phone, address, selectedIcon, foregroundColor, backgroundColor, dotStyle, cornerStyle, gradientData]);
+    }, [qrCode, name, email, phone, address, selectedIcon, foregroundColor, backgroundColor, dotStyle, cornerStyle, gradientData]);
 
     // Define the type for file extensions
     type FileExtension = 'png' | 'jpeg' | 'webp' | 'svg';

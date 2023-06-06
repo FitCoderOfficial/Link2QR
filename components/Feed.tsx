@@ -6,13 +6,6 @@ import { DotType, Options, CornerSquareType, CornerDotType } from 'qr-code-styli
 import CustomQR from "./CustomQR";
 
 
-// const qrCode = new QRCodeStyling({
-//     width: 300,
-//     height: 300,
-//     type: "svg", // Set to SVG
-// });
-
-
 const Feed = () => {
     const [input, setInput] = useState<string>("");
     const [selectedIcon, setSelectedIcon] = useState<string>('');
@@ -62,7 +55,7 @@ const Feed = () => {
 
     useEffect(() => {
         // 클라이언트 측에서만 QRCodeStyling 모듈을 동적으로 가져오기
-        if (typeof window !== "undefined") {
+        if (typeof window !== "undefined" && !qrCode) {
             import("qr-code-styling")
                 .then(({ default: QRCodeStyling }) => {
                     const newQrCode = new QRCodeStyling({
@@ -73,11 +66,15 @@ const Feed = () => {
                     });
 
                     setQrCode(newQrCode);
-                    
+                    // QR 코드 인스턴스를 DOM 요소에 추가
+                    if (qrRef.current) {
+                        newQrCode.append(qrRef.current);
+                        console.log("QR Code appended to the DOM");
+                    }
                 });
         }
     }, []);
-
+    
     useEffect(() => {
         if (!qrCode) return;
         const qrOptions: Partial<Options> = {
@@ -97,15 +94,16 @@ const Feed = () => {
             backgroundOptions: {
                 color: backgroundColor,
             },
-            cornersSquareOptions: cornerStyle.cornersSquareOptions.type as unknown as CornerSquareType,
-            cornersDotOptions: cornerStyle.cornersDotOptions.type as unknown as CornerDotType,
+            cornersSquareOptions: {
+                type: cornerStyle.cornersSquareOptions.type as CornerSquareType, // Ensure type is of type CornerSquareType
+            },
+            cornersDotOptions: {
+                type: cornerStyle.cornersDotOptions.type as CornerDotType, // Ensure type is of type CornerDotType
+            },
         };
 
         qrCode.update(qrOptions);
-        if (qrRef.current) {
-            qrCode.append(qrRef.current);
-        }
-    }, [input, selectedIcon, foregroundColor, backgroundColor, dotStyle, cornerStyle, gradientData]);
+    }, [qrCode, input, selectedIcon, foregroundColor, backgroundColor, dotStyle, cornerStyle, gradientData]);
 
 
 

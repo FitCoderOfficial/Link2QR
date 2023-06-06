@@ -63,7 +63,10 @@ const WifiFeed = () => {
                     });
 
                     setQrCode(newQrCode);
-                    
+                    if (qrRef.current) {
+                        newQrCode.append(qrRef.current);
+                        console.log("QR Code appended to the DOM");
+                    }
                 });
         }
     }, []);
@@ -71,7 +74,7 @@ const WifiFeed = () => {
     useEffect(() => {
         if (!qrCode) return;
         const qrOptions: Partial<Options> = {
-            data: generateWifiQRCodeValue(),
+            data: generateWifiQRCodeValue() || "https://link2qr.com",
             image: selectedIcon,
             dotsOptions: {
                 type: dotStyle as DotType, // Ensure dotStyle is of type DotType
@@ -87,15 +90,16 @@ const WifiFeed = () => {
             backgroundOptions: {
                 color: backgroundColor,
             },
-            cornersSquareOptions: cornerStyle.cornersSquareOptions.type as unknown as CornerSquareType,
-            cornersDotOptions: cornerStyle.cornersDotOptions.type as unknown as CornerDotType,
+            cornersSquareOptions: {
+                type: cornerStyle.cornersSquareOptions.type as CornerSquareType, // Ensure type is of type CornerSquareType
+            },
+            cornersDotOptions: {
+                type: cornerStyle.cornersDotOptions.type as CornerDotType, // Ensure type is of type CornerDotType
+            },
         };
 
         qrCode.update(qrOptions);
-        if (qrRef.current) {
-            qrCode.append(qrRef.current);
-        }
-    }, [ssid, password, security, selectedIcon, foregroundColor, backgroundColor, dotStyle, cornerStyle, gradientData]);
+    }, [qrCode, ssid, password, security, selectedIcon, foregroundColor, backgroundColor, dotStyle, cornerStyle, gradientData]);
 
 
     return (
