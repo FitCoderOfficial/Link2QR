@@ -34,6 +34,7 @@ const CustomQR: React.FC<CustomQRProps> = ({ onIconSelect, onForegroundColorChan
         "googledrive",
         "imessage",
         "instagram2",
+        "instagram4",
         "KakaoTalk",
         "kakaostory",
         "kakaopage",
