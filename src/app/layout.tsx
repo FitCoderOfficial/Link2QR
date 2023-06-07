@@ -9,10 +9,10 @@ import { SpeedInsights } from "@vercel/speed-insights/next"
 
 export const metadata: Metadata = {
   title: {
-    default: "Link2QR",
-    template: "Link2QR | %s",
+    default: "큐알 코드 생성 Link2QR",
+    template: "큐알 코드 생성 Link2QR | %s",
   },
-  description: 'QR코드를 쉽게 만들어보세요.링크, 카페 와이파이, 연락처 모두 쉽게 만들 수 있어요!',
+  description: '쉬운 큐알 코드 생성기입니다. QR코드를 쉽게 만들어보세요.링크, 카페 와이파이, 연락처 모두 쉽게 만들 수 있어요!',
   icons: {
     icon: "/favicon.ico",
   },
