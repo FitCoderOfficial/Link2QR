@@ -31,7 +31,9 @@ const Footer = () => {
                                 <ul className="text-sm text-gray-700">
                                     {column.links.map((link, linkIdx) => (
                                         <li key={linkIdx} className="mb-2">
-                                            <a href={link.href} target="_blank" rel="noopener noreferrer" className="hover:text-blue-600">{link.name}</a>
+                                            <Link href={link.href}>
+                                                <p className="hover:text-blue-600">{link.name}</p>
+                                            </Link>
                                         </li>
                                     ))}
                                 </ul>
