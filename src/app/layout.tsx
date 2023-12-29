@@ -2,6 +2,7 @@ import type { Metadata } from 'next'
 import '../../styles/globals.css'
 import Nav from '../../components/Nav'
 import Footer from '../../components/Footer';
+import { Analytics } from '@vercel/analytics/react';
 
 
 
@@ -31,6 +32,7 @@ export default function RootLayout({
         <main className='app'>
           <Nav />
           {children}
+          <Analytics />
           <Footer />
         </main>
       </body>
