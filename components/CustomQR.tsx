@@ -1,6 +1,7 @@
-import React, { useState, useRef } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import Image from 'next/image'
 import { CiCirclePlus } from "react-icons/ci"
+import { FaTrash } from "react-icons/fa";
 
 
 interface CustomQRProps {
@@ -9,10 +10,11 @@ interface CustomQRProps {
     onBackgroundColorChange: (color: string) => void;
     onDotStyleChange: (style: string) => void;
     onCornerStyleChange: (cornerStyle: { cornersSquareOptions: { type: string }, cornersDotOptions: { type: string } }) => void;
+    onGradientChange: (gradientData: { startColor: string, endColor: string, direction: number }) => void;
 }
 
 
-const CustomQR: React.FC<CustomQRProps> = ({ onIconSelect, onForegroundColorChange, onBackgroundColorChange, onDotStyleChange, onCornerStyleChange }) => {
+const CustomQR: React.FC<CustomQRProps> = ({ onIconSelect, onForegroundColorChange, onBackgroundColorChange, onDotStyleChange, onCornerStyleChange, onGradientChange }) => {
     const logoNames = [
         "link2qr",
         "bitcoin",
@@ -99,15 +101,17 @@ const CustomQR: React.FC<CustomQRProps> = ({ onIconSelect, onForegroundColorChan
         setActiveMenu(activeMenu === menuName ? '' : menuName);
     };
 
-    const [showIcons, setShowIcons] = useState(false);
     const [activeMenu, setActiveMenu] = useState('');
     const [selectedForegroundColor, setSelectedForegroundColor] = useState('##000000'); // 전경색 상태
     const [selectedBackgroundColor, setSelectedBackgroundColor] = useState('#FFFFFF'); // 배경색 상태
     const foregroundColorPickerRef = useRef<HTMLInputElement>(null);
     const backgroundColorPickerRef = useRef<HTMLInputElement>(null);
+    const gradientColorPickerRef = useRef<HTMLInputElement>(null);
     const fileInputRef = useRef(null);
     const [selectedDotStyle, setSelectedDotStyle] = useState(dotStyles[0]);
     const [selectedCornerStyle, setSelectedCornerStyle] = useState(cornerStyles[0].label);
+    const [selectedGradientData, setSelectedGradientData] = useState({ startColor: '', endColor: '', direction: 0 });
+    const [trackForegroundColor, setTrackForegroundColor] = useState(true);
 
     const handleForegroundColorChange = (e) => {
         const newColor = e.target.value;
@@ -127,6 +131,10 @@ const CustomQR: React.FC<CustomQRProps> = ({ onIconSelect, onForegroundColorChan
 
     const openBackgroundColorPicker = () => {
         backgroundColorPickerRef.current?.click();
+    };
+
+    const openGradientColorPicker = () => {
+        gradientColorPickerRef.current?.click();
     };
 
     const handleImageUpload = (e) => {
@@ -151,11 +159,36 @@ const CustomQR: React.FC<CustomQRProps> = ({ onIconSelect, onForegroundColorChan
         onCornerStyleChange(cornerStyle);
     };
 
+    const handleGradientEndColorChange = (e) => {
+        const newGradientData = { ...selectedGradientData, endColor: e.target.value };
+        setSelectedGradientData(newGradientData);
+        onGradientChange(newGradientData);
+        setTrackForegroundColor(false); // 그라데이션 색상 선택시 추적 해제
+    };
+
+    const handleGradientDirectionChange = (e) => {
+        const newGradientData = { ...selectedGradientData, direction: parseFloat(e.target.value) };
+        setSelectedGradientData(newGradientData);
+        onGradientChange(newGradientData);
+    };
+
+    const handleResetGradient = () => {
+        setTrackForegroundColor(true); // 전경색 추적 활성화
+    };
+
+    useEffect(() => {
+        if (trackForegroundColor) {
+            const updatedGradientData = { ...selectedGradientData, endColor: selectedForegroundColor };
+            setSelectedGradientData(updatedGradientData);
+            onGradientChange(updatedGradientData);
+        }
+    }, [selectedForegroundColor, trackForegroundColor]);
+
 
     return (
         <div className="dropdown-menu feed ">
             <div className="w-full bg-white rounded-lg shadow-xl flex justify-between items-center px-10 py-3">
-                {['로고', '모양'].map((item) => (
+                {['로고', '모양',].map((item) => (
                     <div key={item} onClick={() => toggleMenu(item)} className="cursor-pointer">
                         <div className="text-gray-400 text-base">{item}</div>
                     </div>
@@ -175,12 +208,29 @@ const CustomQR: React.FC<CustomQRProps> = ({ onIconSelect, onForegroundColorChan
                 <div className="cursor-pointer">
                     <div className="flex items-center text-gray-400 text-base">
                         <input
+                            ref={backgroundColorPickerRef}
                             type="color"
                             value={selectedBackgroundColor}
                             onChange={handleBackgroundColorChange}
                             className='w-7 h-7 rounded-full border-2 border-gray-300 left-4 appearance-none'
                         />
                         <span className="text-gray-400 text-base ml-2" onClick={openBackgroundColorPicker}>배경색</span>
+                    </div>
+                </div>
+                <div onClick={() => toggleMenu('그라데이션')} className="cursor-pointer">
+                    <div className="flex items-center text-gray-400 text-base">
+                        <div className="relative w-7 h-7 rounded-full border-2 border-gray-300">
+                        <div className={`absolute top-0 left-0 w-full h-full rounded-full ${trackForegroundColor ? "bg-gradient-to-r from-indigo-500 via-purple-500 to-pink-500" : ""}`}
+                 style={{ background: trackForegroundColor ? "" : selectedGradientData.endColor }} />
+                            <input
+                                ref={gradientColorPickerRef}
+                                type="color"
+                                value={selectedGradientData.endColor}
+                                onChange={handleGradientEndColorChange}
+                                className='w-full h-full opacity-0 absolute top-0 left-0 cursor-pointer'
+                            />
+                        </div>
+                        <span className="text-gray-400 text-base ml-2" onClick={openGradientColorPicker}>그라데이션</span>
                     </div>
                 </div>
             </div>
@@ -248,8 +298,24 @@ const CustomQR: React.FC<CustomQRProps> = ({ onIconSelect, onForegroundColorChan
                         ))}
                     </div>
                 </div>
+            )}
 
-
+            {activeMenu === '그라데이션' && !trackForegroundColor && (
+                <div className="menufeed">
+                    {/* 그라데이션 설정 UI */}
+                    <div className="flex flex-col items-center">
+                        <input
+                            type="range"
+                            min="0"
+                            max="30"
+                            value={selectedGradientData.direction}
+                            onChange={handleGradientDirectionChange}
+                            className='w-full '
+                        />
+                        {/* 휴지통 아이콘 추가 및 클릭 이벤트 핸들러 연결 */}
+                        <FaTrash className="w-6 h-6 mt-2" onClick={handleResetGradient} />
+                    </div>
+                </div>
             )}
 
         </div>

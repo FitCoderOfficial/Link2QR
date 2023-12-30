@@ -18,6 +18,7 @@ const Feed = () => {
     const [backgroundColor, setBackgroundColor] = useState('#FFFFFF');
     const [dotStyle, setDotStyle] = useState('square'); // Default dot style
     const [cornerStyle, setCornerStyle] = useState({ cornersSquareOptions: { type: 'square' }, cornersDotOptions: { type: 'square' } });
+    const [gradientData, setGradientData] = useState({ startColor: '', endColor: '', direction: 0 });
     const qrRef = useRef(null);
 
     const handleInputChange = (e) => {
@@ -41,34 +42,38 @@ const Feed = () => {
         setCornerStyle(newCornerStyle);
     };
 
+    const handleGradientChange = (gradient) => {
+        setGradientData(gradient);
+    };
+
     useEffect(() => {
-        qrCode.update({
+        const qrOptions = {
             data: input || "https://link2qr.com",
             image: selectedIcon,
             dotsOptions: {
-                color: foregroundColor,
                 type: dotStyle,
                 gradient: {
-                    type: "linear", // 'radial'도 가능
-                    rotation: 0,
+                    type: "linear",
+                    rotation: gradientData.direction, // Assuming you have a state for gradient direction
                     colorStops: [
-                      { offset: 0, color: "#FFB6C1" },
-                      { offset: 1, color: "#FF69B4" }
+                        { offset: 0, color: gradientData.startColor || foregroundColor },
+                        { offset: 1, color: gradientData.endColor || '#000000' } // Default to white if no end color
                     ]
-                  }
-                
+                }
             },
             backgroundOptions: {
                 color: backgroundColor,
             },
             cornersSquareOptions: cornerStyle.cornersSquareOptions,
             cornersDotOptions: cornerStyle.cornersDotOptions,
-            // ... Other QR code options
-        });
+        };
+
+
+        qrCode.update(qrOptions);
         if (qrRef.current) {
             qrCode.append(qrRef.current);
         }
-    }, [input, selectedIcon, foregroundColor, backgroundColor, dotStyle, cornerStyle]);
+    }, [input, selectedIcon, foregroundColor, backgroundColor, dotStyle, cornerStyle, gradientData]);
 
 
     return (
@@ -92,6 +97,7 @@ const Feed = () => {
                 onBackgroundColorChange={handleBackgroundColorChange}
                 onDotStyleChange={handleDotStyleChange}
                 onCornerStyleChange={handleCornerStyleChange}
+                onGradientChange={handleGradientChange}
             />
         </section>
     )
