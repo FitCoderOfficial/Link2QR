@@ -106,7 +106,7 @@ const Feed = () => {
 
             <div className="feed" ref={qrRef} />
 
-            <div className="button-group mt-4 flex justify-center gap-4">
+            <div className="button-group mt-4 flex justify-center gap-2">
                 <select onChange={onExtensionChange} value={fileExt} className="bg-blue-500 text-white rounded-lg p-2 outline-none hover:bg-blue-600 focus:bg-blue-700 transition duration-300">
                     <option value="png">PNG</option>
                     <option value="jpeg">JPEG</option>
