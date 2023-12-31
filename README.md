@@ -1,6 +1,6 @@
 # Link2QR
 
-![Link2QR Logo](./public/assets/images/link2qr_small.svg)
+![Link2QR Logo](./public/link2qr_small.png)
 
 Link2QR is a web application that allows you to easily create QR codes for various purposes, including links, Wi-Fi credentials, and contact information. Visit the live service at [link2qr.com](https://link2qr.com).
 
