@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useRef } from 'react';
 import Image from 'next/image'
 import { CiCirclePlus } from "react-icons/ci"
+import { FaUndo } from "react-icons/fa";
 import { FaTrash } from "react-icons/fa";
 
 
@@ -105,6 +106,7 @@ const CustomQR: React.FC<CustomQRProps> = ({ onIconSelect, onForegroundColorChan
     };
 
     const [activeMenu, setActiveMenu] = useState('');
+    const [showTrashIcon, setShowTrashIcon] = useState(false);
     const [selectedForegroundColor, setSelectedForegroundColor] = useState('#000000'); // 전경색 상태
     const [selectedBackgroundColor, setSelectedBackgroundColor] = useState('#FFFFFF'); // 배경색 상태
     const foregroundColorPickerRef = useRef<HTMLInputElement>(null);
@@ -186,6 +188,11 @@ const CustomQR: React.FC<CustomQRProps> = ({ onIconSelect, onForegroundColorChan
         setTrackForegroundColor(true); // 전경색 추적 활성화
     };
 
+    const handleResetLogo = () => {
+        // 로고 초기화 로직을 여기에 추가
+        onIconSelect(''); // 빈 문자열로 로고 초기화
+    };
+
     useEffect(() => {
         if (trackForegroundColor) {
             const updatedGradientData = { ...selectedGradientData, endColor: selectedForegroundColor };
@@ -247,12 +254,16 @@ const CustomQR: React.FC<CustomQRProps> = ({ onIconSelect, onForegroundColorChan
 
             {activeMenu === '로고' && (
                 <div className="menufeed">
+                    <button onClick={handleResetLogo} className="icon-button">
+                        <FaUndo className="w-12 h-12 text-gray-500 " />
+                    </button>
+
                     <button onClick={() => {
                         if (fileInputRef.current) {
                             fileInputRef.current.click();
                         }
                     }} className="icon-button">
-                        <CiCirclePlus className="w-16 h-16" />
+                        <CiCirclePlus className="w-16 h-16 text-gray-500" />
                     </button>
                     <input
                         ref={fileInputRef}
